@@ -1,12 +1,33 @@
 import UIKit
 
+
 /*Дан массив целый чисел, необходимо реализовать метод, вручную его разворачивающий, не используя системные методы наподобие reverse,  вспомогательные массивы и структуры данных.
 
 Т.е. необходимо реализовать собственное решение, без использования готовых системных методов.
 
 Например, на входе: [1, 2, 3, 4, 5], на выходе: [5, 4, 3, 2, 1]*/
 
-func reverseArray(arr: [Int]) -> [Int] {
+//: Solution 1
+extension Array where Element == Int {
+    mutating func reverseArray() {
+        let length = self.count //Определяем количество элементов в массиве
+        for index in 0..<length/2 {
+            //Меняем элементы местами с помощью дополнительной константы temp
+            let temp = self[index]
+            self[index] = self[length - 1 - index]
+            self[length - 1 - index] = temp
+        }
+    }
+}
+var arr = [-1, 4, 8, 89]
+print(arr)
+
+arr.reverseArray()
+print(arr)
+
+//: Solution 2
+
+func reversedArray(arr: [Int]) -> [Int] {
     var reversedArray = arr
     let length = reversedArray.count //Определяем количество элементов в массиве
     for index in 0..<length/2 {
@@ -18,7 +39,10 @@ func reverseArray(arr: [Int]) -> [Int] {
     return reversedArray
 }
 
-reverseArray(arr: [-1, 4, 8, 89])
+var arr2 = [0, 6, 58, 9]
+print(arr2)
+arr2 = reversedArray(arr: arr2)
+print(arr2)
 
 
 /*Объявить переменную – матрицу целых чисел и проинициализировать ее рандомными (можно использовать системный генератор случайных чисел) значениями (т.е. не в ручную).
@@ -54,7 +78,7 @@ reverseArray(arr: [-1, 4, 8, 89])
 [8, 9, 0, 1]
  */
 
-func rearrangeMatrix(rows: Int, columns: Int) {
+func autoGenerateMatrix(rows: Int, columns: Int) -> [[Int]] {
     //Задаем матрицу в качестве computed property
     var matrix: [[Int]] {
         get {
@@ -72,25 +96,34 @@ func rearrangeMatrix(rows: Int, columns: Int) {
             return newMatrix
         }
     }
-    
-    var rearrangedMatrix = matrix
-    //Меняем значение элемента в четной строке на элемент в нечетной
-        for i in 0..<rearrangedMatrix.count{
-            if i % 2 != 0 { //Проверяем строку на четность дополнительно избегаем indexOutOfRange
-                for j in 0..<rearrangedMatrix[i].count {
-                    //Меняем элементы местами с помощью дополнительной константы temp
-                    let temp = rearrangedMatrix[i][j]
-                    rearrangedMatrix[i][j] = rearrangedMatrix[i-1][j]
-                    rearrangedMatrix[i-1][j] = temp
-                }
-            }
-            
-        }
-        print("Результат замены строк в четных позициях на значения строк в нечетных позициях")
-        for row in rearrangedMatrix {
-            print(row)
-        }
+    return matrix
 
 }
 
-rearrangeMatrix(rows: 4, columns: 2)
+func rearrangeMatrix(matrix: [[Int]]) -> [[Int]] {
+    var rearrangedMatrix = matrix
+    //Меняем значение элемента в четной строке на элемент в нечетной
+    for i in 0..<rearrangedMatrix.count{
+        if i % 2 != 0 { //Проверяем строку на четность дополнительно избегаем indexOutOfRange
+            for j in 0..<rearrangedMatrix[i].count {
+                //Меняем элементы местами с помощью дополнительной константы temp
+                let temp = rearrangedMatrix[i][j]
+                rearrangedMatrix[i][j] = rearrangedMatrix[i-1][j]
+                rearrangedMatrix[i-1][j] = temp
+            }
+        }
+
+    }
+    print("Результат замены строк в четных позициях на значения строк в нечетных позициях")
+    for row in rearrangedMatrix {
+        print(row)
+    }
+    return rearrangedMatrix
+}
+
+
+rearrangeMatrix(matrix: autoGenerateMatrix(rows: 4, columns: 3))
+
+let matrix = autoGenerateMatrix(rows: 5, columns: 3)
+rearrangeMatrix(matrix: matrix)
+
